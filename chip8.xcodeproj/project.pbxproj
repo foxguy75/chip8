@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FCDE205C248EE69B005E2920 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCDE205B248EE69B005E2920 /* main.cpp */; };
+		FCDE2066248EE6C1005E2920 /* chip8_instructions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCDE2062248EE6C1005E2920 /* chip8_instructions.cpp */; };
+		FCDE2067248EE6C1005E2920 /* Chip8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCDE2063248EE6C1005E2920 /* Chip8.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		FCDE2058248EE69B005E2920 /* chip8 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = chip8; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCDE205B248EE69B005E2920 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		FCDE2062248EE6C1005E2920 /* chip8_instructions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = chip8_instructions.cpp; sourceTree = "<group>"; };
+		FCDE2063248EE6C1005E2920 /* Chip8.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Chip8.cpp; path = chip8/Chip8.cpp; sourceTree = SOURCE_ROOT; };
+		FCDE2065248EE6C1005E2920 /* chip8_instructions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = chip8_instructions.hpp; path = ../../chip8_instructions.hpp; sourceTree = "<group>"; };
+		FCDE2068248EEDCD005E2920 /* Chip8.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Chip8.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +63,10 @@
 		FCDE205A248EE69B005E2920 /* chip8 */ = {
 			isa = PBXGroup;
 			children = (
+				FCDE2063248EE6C1005E2920 /* Chip8.cpp */,
+				FCDE2068248EEDCD005E2920 /* Chip8.hpp */,
+				FCDE2062248EE6C1005E2920 /* chip8_instructions.cpp */,
+				FCDE2065248EE6C1005E2920 /* chip8_instructions.hpp */,
 				FCDE205B248EE69B005E2920 /* main.cpp */,
 			);
 			path = chip8;
@@ -118,7 +128,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCDE2067248EE6C1005E2920 /* Chip8.cpp in Sources */,
 				FCDE205C248EE69B005E2920 /* main.cpp in Sources */,
+				FCDE2066248EE6C1005E2920 /* chip8_instructions.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
