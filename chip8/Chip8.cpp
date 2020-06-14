@@ -34,13 +34,26 @@ void Chip8::load(std::string fileName)
     // Return
     this->memory[0x361] = 0x00;
     this->memory[0x362] = 0xEE;
-    // check is value is 7
-    this->memory[0x203] = 0x3b;
-    this->memory[0x204] = 0x07;
-    // if true
-    this->memory[0x205] = 0x1f;
-    this->memory[0x206] = 0xfe;
-
+    // Add Test
+    // Load V3 with 16
+    this->memory[0x202] = 0x63;
+    this->memory[0x203] = 0x0f;
+    // Load v8 with 175
+    this->memory[0x204] = 0x68;
+    this->memory[0x205] = 0xaf;
+    // Call the add function
+    this->memory[0x206] = 0x83;
+    this->memory[0x207] = 0x84;
+    // Add Test
+    // Load V3 with 16
+    this->memory[0x208] = 0x64;
+    this->memory[0x209] = 0x0f;
+    // Load v8 with 175
+    this->memory[0x20a] = 0x65;
+    this->memory[0x20b] = 0xff;
+    // Call the add function
+    this->memory[0x20c] = 0x84;
+    this->memory[0x20d] = 0x54;
     return;
 }
 
@@ -61,12 +74,12 @@ void Chip8::run()
         std::cout << "OP Code: " << std::hex << opCode << std::endl;
         
         int tempCount = 0;
-        for (auto elem : this->vRegisters) {
-            std::cout << "V" << tempCount << ": " << std::hex << static_cast<int>(elem) << " ";
-            if(tempCount % 8 == 0)
+        for ( auto elem : this->vRegisters ) {
+            if(tempCount % 8 == 0 && tempCount != 0)
             {
                 std::cout << std::endl;
             }
+            std::cout << "V" << tempCount << ": " << std::hex << static_cast<int>(elem) << " ";
             tempCount++;
         }
         
@@ -83,10 +96,8 @@ void Chip8::run()
                     // Return from subroutine
                     case 0x00ee:
                     {
-                        int8_t tempStackPointer = static_cast<int>(this->stackPointer);
-                        int16_t temp = this->stack[tempStackPointer];
-                        this->programCounter = this->stack[temp];
                         this->stackPointer--;
+                        this->programCounter = stack[static_cast<uint16_t>(this->stackPointer)];
                         break;
                     }
                         
@@ -104,25 +115,24 @@ void Chip8::run()
                 this->stack[stackPointer] = this->programCounter;
                 this->stackPointer++;
                 this->programCounter = (opCode & 0x0fff);
-                this->programCounter--;
                 break;
             // Skip next instruction if Vx == kk.
             case 0x3000:
-                if (this->vRegisters[(opCode & 0x0f00)] == (opCode & 0x0ff))
+                if (this->vRegisters[(opCode & 0x0f00) >> 8] == (opCode & 0x0ff))
                 {
                     this->programCounter += 2;
                 }
                 break;
             // Skip next instruction if Vx != kk.
             case 0x4000:
-                if (this->vRegisters[(opCode & 0x0f00)] != (opCode & 0x0ff))
+                if (this->vRegisters[(opCode & 0x0f00) >> 8] != (opCode & 0x0ff))
                 {
                     this->programCounter += 2;
                 }
                 break;
             // Skip next instruction if Vx == Vy.
             case 0x5000:
-                if (this->vRegisters[(opCode & 0x0f00)] == this->vRegisters[0x00f0])
+                if (this->vRegisters[(opCode & 0x0f00) >> 8] == this->vRegisters[0x00f0])
                 {
                     this->programCounter += 2;
                 }
@@ -131,7 +141,66 @@ void Chip8::run()
             case 0x6000:
                 this->vRegisters[(opCode & 0x0f00) >> 8] = (opCode & 0x00ff);
                 break;
-                
+            // Set Vx = Vx + kk.
+            case 0x7000:
+                this->vRegisters[(opCode & 0x0f00) >> 8] += (opCode & 0x00ff);
+                break;
+            case 0x8000:
+                switch (opCode & 0x000f)
+                {
+                // Set Vx = Vy.
+                case 0x0000:
+                    this->vRegisters[(opCode & 0x0f00) >> 8] = (opCode & 0x00f0 >> 4);
+                    break;
+                // Set Vx = Vx OR Vy.
+                case 0x0001:
+                    this->vRegisters[(opCode & 0x0f00) >> 8] = (this->vRegisters[(opCode & 0x0f00) >> 8] | this->vRegisters[(opCode & 0x00f0) >> 4]);
+                    break;
+                // Set Vx = Vx AND Vy.
+                case 0x0002:
+                    this->vRegisters[(opCode & 0x0f00) >> 8] = (this->vRegisters[(opCode & 0x0f00) >> 8] & this->vRegisters[(opCode & 0x00f0) >> 4]);
+                    break;
+                // Set Vx = Vx XOR Vy.
+                case 0x0003:
+                    this->vRegisters[(opCode & 0x0f00) >> 8] = (this->vRegisters[(opCode & 0x0f00) >> 8] ^ this->vRegisters[(opCode & 0x00f0) >> 4]);
+                    break;
+                // Set Vx = Vx + Vy, set VF = carry.
+                case 0x0004:
+                {
+                    uint16_t sum = this->vRegisters[(opCode & 0x0f00) >> 8] + this->vRegisters[(opCode & 0x00f0) >> 4];
+
+                    if (sum > 255)
+                    {
+                        this->vRegisters[0xf] = 1;
+                    }
+                    else
+                    {
+                        this->vRegisters[0xf] = 0;
+                    }
+
+                    this->vRegisters[(opCode & 0x0f00) >> 8] = this->vRegisters[(opCode & 0x0f00) >> 8] + this->vRegisters[(opCode & 0x00f0) >> 4];
+                    break;
+                }
+                // Set Vx = Vx - Vy, set VF = NOT borrow.
+                case 0x0005:
+                {
+                    if(this->vRegisters[(opCode & 0x0f00) >> 8] > this->vRegisters[(opCode & 0x00f0) >> 4])
+                    {
+                        
+                        this->vRegisters[0xf] = 1;
+                    }
+                    else
+                    {
+                        this->vRegisters[0xf] = 0;
+                    }
+
+                    this->vRegisters[(opCode & 0x0f00) >> 8] = this->vRegisters[(opCode & 0x0f00) >> 8] - this->vRegisters[(opCode & 0x00f0) >> 4];
+                    break;
+                }
+                default:
+                    break;
+                }
+                break;
             default:
                 running = false;
                 break;

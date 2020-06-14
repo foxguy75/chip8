@@ -8,7 +8,7 @@
 #include <iostream>
 #include "Chip8.hpp"
 
-int main(int argc, const char * argv[]) {
+void main() {
     Chip8 chip{};
     chip.load("test1l.rom");
     chip.run();
@@ -45,5 +45,6 @@ int main(int argc, const char * argv[]) {
 //        }
 //    }
     std::cout << std::endl;
-    return 0;
+    std::cin.ignore(); 
+    return;
 }

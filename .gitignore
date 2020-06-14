@@ -1,0 +1,4 @@
+# Visual Studio ignore files
+Debug/
+x64/
+.vs/
