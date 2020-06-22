@@ -10,12 +10,14 @@
 
 void main() {
     Chip8 chip{};
+    chip.initDevConsol();
+
     chip.load("test1l.rom");
     chip.run();
-    
-    std::cout << "chip program counter: ";
-    std::cout << std::hex << static_cast<int>(chip.programCounter);
-    std::cout << std::endl;
+
+    //std::cout << "chip program counter: ";
+    //std::cout << std::hex << static_cast<int>(chip.programCounter);
+    //std::cout << std::endl;
 
 //    int temp = 0;
 //    int temp2 = 0;
@@ -44,6 +46,7 @@ void main() {
 //            std::cout << std::endl;
 //        }
 //    }
+    std::cout << "Program ended... " << std::endl << "Press enter to continue...";
     std::cout << std::endl;
     std::cin.ignore(); 
     return;

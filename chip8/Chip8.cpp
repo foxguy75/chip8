@@ -5,6 +5,7 @@
 //  Created by Ben Camburn on 6/8/20.
 //
 
+
 #include <iostream>
 #include <ctime>
 
@@ -16,7 +17,8 @@ Chip8::Chip8()
     iRegister{0x00},
     stack{},
     memory{},
-    vRegisters{}
+    vRegisters{},
+    registerDisplay{}
 {
 }
 
@@ -48,7 +50,7 @@ void Chip8::load(std::string fileName)
     // Load V3 with 16
     this->memory[0x208] = 0x64;
     this->memory[0x209] = 0x0f;
-    // Load v8 with 175
+    // Load v8 with 255
     this->memory[0x20a] = 0x65;
     this->memory[0x20b] = 0xff;
     // Call the add function
@@ -67,24 +69,15 @@ void Chip8::run()
     bool running = true;
     
     while (running) {
+
+        this->updateDebugRegisterDisplay();
+
         uint16_t opCode = this->memory[this->programCounter] << 8;
         this->programCounter++;
         opCode = opCode | this->memory[this->programCounter];
         this->programCounter++;
         std::cout << "OP Code: " << std::hex << opCode << std::endl;
-        
-        int tempCount = 0;
-        for ( auto elem : this->vRegisters ) {
-            if(tempCount % 8 == 0 && tempCount != 0)
-            {
-                std::cout << std::endl;
-            }
-            std::cout << "V" << tempCount << ": " << std::hex << static_cast<int>(elem) << " ";
-            tempCount++;
-        }
-        
-        std::cout << std::endl;
-        
+                        
         switch (opCode & 0xf000) {
             case 0x0000:
                 switch (opCode & 0x00ff) {
@@ -205,6 +198,10 @@ void Chip8::run()
                 running = false;
                 break;
         }
-    }
 
+        std::cout << "Press enter to continue...";
+
+        std::cout << std::endl;
+        std::cin.ignore();
+    }
 }

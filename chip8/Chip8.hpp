@@ -12,6 +12,8 @@
 #include <string>
 #include <stdio.h>
 #include <stdint.h>
+#include <map>
+#include <Windows.h>
 
 struct Chip8 {
     uint16_t programCounter;
@@ -21,10 +23,18 @@ struct Chip8 {
     std::array<uint8_t, 4096> memory;
     std::array<uint8_t, 16> vRegisters;
 
+    std::map<int, COORD> registerDisplay;
+
+    COORD prompt; 
+
     Chip8();
     void load(std::string filePath);
     void run();
     void clearDisplay();
+
+    // Debug and Dev Console
+    void initDevConsol();
+    void updateDebugRegisterDisplay();
 };
 
 #endif /* chip8_hpp */

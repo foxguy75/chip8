@@ -24,6 +24,9 @@
     <ClCompile Include="chip8\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="chip8\Display\Chip8DisplayWindows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chip8\Chip8.hpp">

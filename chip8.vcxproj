@@ -68,6 +68,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\Repos\chip8\chip8\Display;$(IncludePath)</IncludePath>
+    <SourcePath>D:\Repos\chip8\chip8\Display;$(SourcePath)</SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -100,6 +104,7 @@
   <ItemGroup>
     <ClCompile Include="chip8\Chip8.cpp" />
     <ClCompile Include="chip8\chip8_instructions.cpp" />
+    <ClCompile Include="chip8\Display\Chip8DisplayWindows.cpp" />
     <ClCompile Include="chip8\main.cpp" />
   </ItemGroup>
   <ItemGroup>
