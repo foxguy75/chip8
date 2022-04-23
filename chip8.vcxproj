@@ -69,7 +69,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\Repos\chip8\chip8\Display;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Repos\chip8\chip8\Display;$(SDL2_INCLUDE_DIRS);$(SDL2_LIBRARIES);$(IncludePath)</IncludePath>
     <SourcePath>D:\Repos\chip8\chip8\Display;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -100,6 +100,15 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>$(SDL2_LIBRARIES)\x64\SDL2.lib;$(SDL2_LIBRARIES)\x64\SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="chip8\Chip8.cpp" />

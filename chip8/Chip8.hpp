@@ -8,33 +8,39 @@
 #ifndef chip8_hpp
 #define chip8_hpp
 
-#include <array>
+#include <vector>
 #include <string>
-#include <stdio.h>
-#include <stdint.h>
 #include <map>
-#include <Windows.h>
 
 struct Chip8 {
-    uint16_t programCounter;
-    uint8_t stackPointer;
-    uint16_t iRegister;
-    std::array<uint16_t, 16> stack;
-    std::array<uint8_t, 4096> memory;
-    std::array<uint8_t, 16> vRegisters;
-
-    std::map<int, COORD> registerDisplay;
-
-    COORD prompt; 
-
     Chip8();
     void load(std::string filePath);
-    void run();
-    void clearDisplay();
+    void runCycle();
 
-    // Debug and Dev Console
-    void initDevConsol();
-    void updateDebugRegisterDisplay();
+    uint8_t stackPointer;
+    uint8_t delayTimer;
+    uint8_t soundTimer;
+    uint16_t programCounter;
+    uint16_t iRegister;
+
+    std::vector<uint8_t> memory;
+    std::vector<uint8_t> vRegisters;
+    std::vector<uint8_t> keys;
+    std::vector<uint8_t> mainDisplay;
+    std::vector<uint16_t> stack;
+
+    // The system should check this every cycle to see if 
+    // the CPU is request input from the keys. 
+    bool checkKeys;
+    void setKeys() noexcept;
+
+    bool drawFlag; 
+
+    bool halt; 
+private: 
+    std::map<uint8_t, uint8_t> hexDigitMap;
+    int opCodeWatchDog;
+    uint16_t previousopCode; 
 };
 
 #endif /* chip8_hpp */
